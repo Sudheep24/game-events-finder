@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 
 export const PageNav = () => {
-  const [activeTab, setActiveTab] = useState(null);
+  const [activeTab, setActiveTab] = useState<number | null>(null);
 
   return (
     <div className='bg-white text-black hidden md:flex justify-center items-center p-3  mx-auto rounded-full  opacity-90 fixed top-96 left-0 right-0 mt-80 w-1/3 '>
