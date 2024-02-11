@@ -10,5 +10,5 @@
 }
 
 .animate-slide-up {
-    animation: slideUp 1s ease forwards;
+    animation: slideUp 1.5s ease forwards;
 }
