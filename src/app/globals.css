@@ -14,12 +14,21 @@
     }
 }
 
+.video-container {
+  transition: transform 0.3s ease-in-out;
+}
+
+.animate-up {
+  transform: scale(0.8); /* Adjust the scale value as needed */
+}
+
+
 .animate-gradient {
     background-size: 200% auto;
     animation: gradient-animation 3s ease infinite;
 }
 
- 
+
 @layer base {
   :root {
     --background: 222.2 84% 4.9%;
