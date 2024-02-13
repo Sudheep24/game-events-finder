@@ -8,6 +8,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { Navigation } from './navigation-menu'
+import Link from 'next/link'
 
 
 export const MobileNav = () => {
@@ -20,9 +21,13 @@ export const MobileNav = () => {
             <SheetContent>
                 <SheetHeader>
                 <div className='flex flex-col p-5 gap-9 border-slate-50'>
+                  <Link href={'/'}>
                     <p>Home</p>
+                  </Link>
+                  <Link href={'/events'}>
                     <p>Events</p>
-                    <p>Playmates</p>
+                  </Link>
+                    
                 </div>
                 </SheetHeader>
             </SheetContent>
