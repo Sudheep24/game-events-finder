@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from '../ui/button';
+import Link from 'next/link';
 
 const cardsData = [
   {
@@ -39,7 +40,11 @@ export const Games = () => {
 
     <div className='flex justify-center'>
 
+      <Link href={'/events'}>
+
      <Button variant={'outline'} className='text-xl p-10 border border-white  rounded-full flex justify-center '>view more &gt;</Button>
+
+     </Link>
     </div>
     </>
   );

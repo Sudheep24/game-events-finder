@@ -9,7 +9,7 @@ export default function SinglePost() {
         <div className='flex justify-between'>
         <p >No.28,ABC Street Chennai</p>
         <Link href={'/events'}>
-        <Button className='mr-56 rounded-full'>Back</Button>
+        <button className='mr-56 rounded-full'>Back</button>
         </Link>
         </div>
         <hr className='border-b font-bold mt-10 text-white'/>

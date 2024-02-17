@@ -26,6 +26,9 @@ export const Header = () => {
       <div className="flex gap-4 p-3">
         <SignedIn>
           <UserButton afterSignOutUrl='/'></UserButton>
+          <Link href={'/write'}>
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-E00ahDJta1bwkrS1LgNfXZnUltxnxN4qhQ&usqp=CAU" className='w-8' />
+          </Link>
         </SignedIn>
         <MobileNav/>
         <SignedOut>

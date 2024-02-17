@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from '../ui/button';
 import ScrollUp from 'react-scroll-up';
+import Link from 'next/link';
 
 export const About = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -27,7 +28,10 @@ export const About = () => {
       <div className={`flex flex-col justify-center items-center pt-24 mt-36 `}>
         <p className='text-center p-14 w-1/2 font-medium text-5xl'>Welcome to <span className="font-bold "  style={{ background: 'linear-gradient(to right, #4facfe, #00f2fe)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Game Gatherer</span>, where outdoor excitement meets communal connections!</p>
         <p className='text-center p-14 w-2/3 font-medium text-4xl'>Powered by <span className="font-bold "  style={{ background: 'linear-gradient(to right, #4facfe, #00f2fe)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>cutting-edge technology</span>, Game Gatherer facilitates seamless interactions and connections. Join us in discovering the joy of outdoor play, where every game is an opportunity for new friendships and unforgettable memories.</p> 
-        <Button variant={'outline'} className='text-xl p-10 border border-white  rounded-full'>Explore More &gt;</Button>
+        <Link href={'/events'}>
+            <Button variant={'outline'} className='text-xl p-10 border border-white  rounded-full'>Explore More &gt;</Button>
+        </Link>
+
       </div>
 
       <div className={`video-container ${isVisible ? 'animate-up' : ''}`}>
