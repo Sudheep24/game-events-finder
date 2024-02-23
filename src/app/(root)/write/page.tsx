@@ -1,5 +1,6 @@
 "use client"
 
+
 import React, { useState, ChangeEvent } from 'react';
 
 export default function Write() {
@@ -14,8 +15,9 @@ export default function Write() {
   };
 
   const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files[0];
-    if (file) {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      const file = files[0];
       // Handle the image upload here
       console.log('Image uploaded:', file);
     }
