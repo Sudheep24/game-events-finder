@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 
 export default function Write() {
   const [displayedForm, setDisplayedForm] = useState('events');
@@ -13,7 +13,7 @@ export default function Write() {
     setDisplayedForm('playmates');
   };
 
-  const handleImageUpload = (event) => {
+  const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files[0];
     if (file) {
       // Handle the image upload here
@@ -22,7 +22,8 @@ export default function Write() {
   };
 
   const handleUploadClick = () => {
-    document.getElementById('imageInput').click();
+    const input = document.getElementById('imageInput') as HTMLInputElement;
+    input.click();
   };
 
   return (
