@@ -7,13 +7,15 @@ export default authMiddleware({
   publicRoutes:[
     '/',
     '/events/:id',
-    '/events/api/webhook/clerk',
+    '/gatherer-one.vercel.app/api/webhook/clerk',
     '/events/api/webhook/stripe',  
+    "/api/webhooks(.*)",
   ],
   ignoredRoutes:[
     '/events/:id',
-    '/events/api/webhook/clerk',
+    '/gatherer-one.vercel.app/api/webhook/clerk',
     '/events/api/webhook/stripe',  
+   
   ]
 });
  
