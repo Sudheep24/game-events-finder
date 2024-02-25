@@ -1,7 +1,7 @@
-import { EventsCards } from '@/components/shared/EventsCars'
-import { Search } from '@/components/shared/Search'
-import { Button } from '@/components/ui/button'
+
 import React from 'react'
+import { EventsCards } from '../../../components/shared/EventsCars'
+import { Search } from '../../../components/shared/Search'
 
 export default function Events() {
   return (

@@ -1,11 +1,11 @@
 import Image from "next/image";
-import { Header } from "../../components/shared/header";
-import { Footer } from "../../components/shared/footer";
-import { HeroSection } from "@/components/shared/HeroSection";
-import { About } from "@/components/shared/About";
-import {Games} from "@/components/shared/Games";
+
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+
+import { HeroSection } from "../../components/shared/HeroSection";
+import { About } from "../../components/shared/About";
+import { Games } from "../../components/shared/Games";
+import { Button } from "../../components/ui/button";
 
 
 
