@@ -8,7 +8,7 @@ export default authMiddleware({
     '/api/webhooks/stripe',
     '/api/uploadthing',
     "/api/webhooks(.*)",
-    '/app/api/webhooks/clerk'
+    '/app/api/webhooks/clerk', // Add '/app/api/webhooks/clerk' to publicRoutes
   ],
   ignoredRoutes: [
     '/api/webhook/clerk',
@@ -21,4 +21,3 @@ export default authMiddleware({
 export const config = {
   matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
 };
- 
