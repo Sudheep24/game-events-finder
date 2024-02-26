@@ -7,12 +7,14 @@ export default authMiddleware({
     '/api/webhooks/clerk',
     '/api/webhooks/stripe',
     '/api/uploadthing',
-    "/api/webhooks(.*)"
+    "/api/webhooks(.*)",
+    '/app/api/webhooks/clerk'
   ],
   ignoredRoutes: [
     '/api/webhook/clerk',
     '/api/webhook/stripe',
-    '/api/uploadthing'
+    '/api/uploadthing',
+    '/app/api/webhooks/clerk'
   ]
 });
  
