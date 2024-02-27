@@ -79,11 +79,9 @@ export async function POST(req: Request) {
   }
 
   if (eventType === 'user.updated') {
-    const {id,email_addresses, image_url, first_name, last_name, username } = evt.data
+    const {id, image_url, first_name, last_name, username } = evt.data
 
     const user = {
-      clerkID:id,
-      email:email_addresses[0].email_address,
       firstName: first_name,
       lastName: last_name,
       username: username!,
@@ -94,6 +92,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ message: 'OK', user: updatedUser })
   }
+
 
   if (eventType === 'user.deleted') {
     const { id } = evt.data
