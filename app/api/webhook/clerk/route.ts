@@ -1,15 +1,15 @@
 import { Webhook } from 'svix'
 import { headers } from 'next/headers'
 import { WebhookEvent } from '@clerk/nextjs/server'
-
 import { clerkClient } from '@clerk/nextjs'
 import { NextResponse } from 'next/server'
-import { createUser,updateUser,deleteUser } from '../../../../lib/actions/user.actions'
+import { createUser, updateUser, deleteUser } from '../../../../lib/actions/user.actions'
+
 export async function POST(req: Request) {
- 
-  // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
-  const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET
- 
+  // Assign the webhook secret directly
+  const WEBHOOK_SECRET = "whsec_fYiV0FP8m0++OQW+UiDDgDloMfLyn+5y";
+
+  // Check if the webhook secret is provided
   if (!WEBHOOK_SECRET) {
     throw new Error('Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local')
   }
@@ -22,7 +22,7 @@ export async function POST(req: Request) {
  
   // If there are no headers, error out
   if (!svix_id || !svix_timestamp || !svix_signature) {
-    return new Response('Error occured -- no svix headers', {
+    return new Response('Error occurred -- no svix headers', {
       status: 400
     })
   }
@@ -45,7 +45,7 @@ export async function POST(req: Request) {
     }) as WebhookEvent
   } catch (err) {
     console.error('Error verifying webhook:', err);
-    return new Response('Error occured', {
+    return new Response('Error occurred', {
       status: 400
     })
   }
