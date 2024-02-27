@@ -9,6 +9,7 @@ export type CreateUserParams = {
 }
 
 export type UpdateUserParams = {
+  clerkID:string
   firstName: string
   lastName: string
   username: string
