@@ -7,7 +7,7 @@ import { createUser, updateUser, deleteUser } from '../../../../lib/actions/user
 
 export async function POST(req: Request) {
   // Assign the webhook secret directly
-  const WEBHOOK_SECRET = "whsec_fYiV0FP8m0++OQW+UiDDgDloMfLyn+5y";
+  const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
 
   // Check if the webhook secret is provided
   if (!WEBHOOK_SECRET) {
