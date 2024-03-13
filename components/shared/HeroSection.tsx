@@ -7,7 +7,7 @@ import { PageNav } from './pageNav'
 export const HeroSection = () => {
   return (
     <>
-    <div className='justify-center grid p-10 mt-32 gap-3 animate-slide-up'>
+    <div className='justify-center grid p-10 mt-32 gap-3 animate-slide-up' id='intro'>
          
         <p className='text-3xl md:text-5xl text-center font-extrabold pt-10 animate-slide-up'>
           Welcome To

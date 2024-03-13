@@ -20,7 +20,7 @@ const cardsData = [
 export const Games = () => {
   return (
     <>
-    <div>
+    <div id='games'>
       <p className='text-center flex justify-center items-center text-5xl font-bold animate-gradient' > Games to <span style={{ background: 'linear-gradient(to right, #4facfe, #00f2fe)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',paddingLeft:'10px' }}> Gamemates</span></p>
     </div>
     <div className='flex gap-11 justify-center p-7'>

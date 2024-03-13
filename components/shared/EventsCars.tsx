@@ -11,7 +11,7 @@ export const EventsCards = () => {
   return (
     <div className='flex gap-3 justify-center '>
       {eventData.map((event, index) => (
-        <div key={index} className="product-card w-[300px] rounded-md shadow-xl overflow-hidden z-[100] relative cursor-pointer snap-start shrink-0 py-8 px-6 bg-white flex flex-col items-center justify-center gap-3 transition-all duration-300 group">
+        <div key={index} className="product-card w-[300px] rounded-md shadow-xl overflow-hidden relative cursor-pointer snap-start shrink-0 py-8 px-6 bg-white flex flex-col items-center justify-center gap-3 transition-all duration-300 group" style={{ zIndex: eventData.length - index }}>
           <div className="absolute -left-[40%] top-0 group-hover:rotate-12 transition-all duration-300 group-hover:scale-150">
             <div className="flex gap-1">
               <svg

@@ -25,7 +25,7 @@ export const About = () => {
 
   return (
     <>
-      <div className={`flex flex-col justify-center items-center pt-24 mt-36 `}>
+      <div className={`flex flex-col justify-center items-center pt-24 mt-36 `} id='about'>
         <p className='text-center p-14 w-1/2 font-medium text-5xl'>Welcome to <span className="font-bold "  style={{ background: 'linear-gradient(to right, #4facfe, #00f2fe)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Game Gatherer</span>, where outdoor excitement meets communal connections!</p>
         <p className='text-center p-14 w-2/3 font-medium text-4xl'>Powered by <span className="font-bold "  style={{ background: 'linear-gradient(to right, #4facfe, #00f2fe)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>cutting-edge technology</span>, Game Gatherer facilitates seamless interactions and connections. Join us in discovering the joy of outdoor play, where every game is an opportunity for new friendships and unforgettable memories.</p> 
         <Link href={'/events'}>

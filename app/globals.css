@@ -28,6 +28,22 @@
   transform: scale(1); /* Adjust the scale value as needed */
 }
 
+.form-input {
+  border-radius: 50px;
+  margin-right: -10px;
+}
+
+@media screen and (max-width: 768px) {
+  .form-input {
+    width: 200px /* Adjust width for medium screens */
+  }
+}
+
+
+
+
+
+
 
 
 .animate-gradient {
@@ -38,7 +54,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 0%; 
+    --background: 200 90% 1%; 
     --foreground: 210 40% 98%;
  
     --card: 222.2 84% 4.9%;
