@@ -1,8 +1,7 @@
 "use strict";
 exports.__esModule = true;
 var react_1 = require("react");
-var EventsCars_1 = require("components\shared\EventsCars.tsx");
-var Search_1 = require("components\shared\Search.tsx");
+
 function Events() {
     return (react_1["default"].createElement("div", null,
         react_1["default"].createElement("div", { className: "flex flex-col justify-center items-center mx-auto mt-10 p-5 gap-2 animate-slide-up" },
