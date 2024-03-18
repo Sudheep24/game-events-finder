@@ -26,7 +26,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "components/shared/Model.tsx"
+    "components/shared/Model.tsx",
+    "components/shared/EventForm.tss"
   ],
   "exclude": ["node_modules"]
 }
