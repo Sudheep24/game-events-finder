@@ -30,7 +30,7 @@ export type CreateEventParams = {
     entryfee: string
     totalslots: string
     available: string
-    img: string
+    imageUrl: string
     categoryId: string
     
   }
@@ -51,7 +51,7 @@ export type UpdateEventParams = {
     entryfee: string
     totalslots: string
     available: string
-    img: string
+    imageUrl: string
     categoryId: string
   }
   path: string
@@ -94,7 +94,7 @@ export type Event = {
     entryfee: string
     totalslots: string
     available: string
-    img: string
+    imageUrl: string
   organizer: {
     _id: string
     firstName: string

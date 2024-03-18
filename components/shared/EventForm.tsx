@@ -15,7 +15,7 @@ import { DatePickerDemo } from "./DatePicker";
 import { useUploadThing } from "../../lib/uploadthing";
 
 import "react-datepicker/dist/react-datepicker.css";
-import { Router, useRouter } from "next/router";
+import {  useRouter } from "next/navigation";
 import { createEvent } from "../../lib/actions/event.action";
 
 type EventFormProps = {
@@ -69,24 +69,36 @@ export default function EventForm({ userId, type }: EventFormProps) {
 
             uploadedImageUrl=uploadedImages[0].url
         }
+if(type == "Create"){
+    try {
+        const newEvent = await createEvent({
+            event: {
+                eventname: values.name,
+                desc: values.description,
+                address: values.address,
 
-        if(type == "Create"){
-            try {
-                const newEvent=await createEvent({
-                    name:{...values,img:uploadedImageUrl},
-                    userId,
-                    path:'/profile'
-                })
+                city: values.city,
+                state: values.state,
+                zip: values.zip,
+                country: values.country,
+                entryfee: values.entryFee,
+                totalslots: values.totalSlots,
+                available: values.availableSlots,
+                imageUrl: uploadedImageUrl,
+                categoryId: values.category
+            },
+            userId,
+            path: '/profile'
+        })
 
-                if(newEvent){
-                    form.reset()
-                    router.push(`/events/${newEvent._id}`)
-                }
-            } catch (error) {
-                console.log(error)
-            }
+        if(newEvent){
+            form.reset()
+            router.push(`/events/${newEvent._id}`)
         }
+    } catch (error) {
+        console.log(error)
     }
+}
 
     return (
         <div className="p-16">
@@ -222,4 +234,5 @@ export default function EventForm({ userId, type }: EventFormProps) {
             </Form>
         </div>
     );
+}
 }

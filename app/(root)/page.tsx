@@ -1,5 +1,6 @@
 "use client"
 
+
 import Image from "next/image";
 import Link from "next/link";
 import { HeroSection } from "../../components/shared/HeroSection";
@@ -38,7 +39,7 @@ export default function Home() {
                         options={{
                             background: {
                                 color: {
-                                    value: "#1111",
+                                    value: "black",
                                 },
                             },
                             fpsLimit: 120,
@@ -60,7 +61,7 @@ export default function Home() {
                                     },
                                     repulse: {
                                         distance: 200,
-                                        duration: 0.2,
+                                        duration: 0.4,
                                     },
                                 },
                             },
@@ -79,10 +80,10 @@ export default function Home() {
                                     direction: "none",
                                     enable: true,
                                     outModes: {
-                                        default:"destroy",
+                                        default: "bounce",
                                     },
                                     random: false,
-                                    speed: 1.75,
+                                    speed: 1,
                                     straight: false,
                                 },
                                 number: {
@@ -90,16 +91,16 @@ export default function Home() {
                                         enable: true,
                                         area: 800,
                                     },
-                                    value: 200,
+                                    value: 80,
                                 },
                                 opacity: {
-                                    value: 0.1,
+                                    value: 0.5,
                                 },
                                 shape: {
-                                    type: "triangle",
+                                    type: "circle",
                                 },
                                 size: {
-                                    value: { min: 1, max: 9 },
+                                    value: { min: 1, max: 5 },
                                 },
                             },
                             detectRetina: true,
