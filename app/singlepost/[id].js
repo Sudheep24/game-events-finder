@@ -1,8 +1,8 @@
 // /pages/singlepost/[id].js
-"use client"
+
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { db } from '../../../firebase'; // Adjust the import based on your Firebase setup
+import { db } from '../../firebase'; // Adjust the import based on your Firebase setup
 import { doc, getDoc } from 'firebase/firestore';
 
 const EventDetail = () => {

@@ -1,229 +1,215 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Button } from "../ui/button";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { eventFormSchema } from "../../lib/validator";
-import * as z from 'zod';
-import React, { useState } from 'react';
-import Dropdown from "./Dropdown";
-import { Textarea } from "@/components/ui/textarea";
-import { FileUploader } from "./FIleUploader";
-import { DatePickerDemo } from "./DatePicker";
-import { useUploadThing } from "../../lib/uploadthing";
-import { useRouter } from "next/navigation";
-import { createEvent } from "../../lib/actions/event.action";
+import { db, storage } from "../../firebase"; // Adjust this import based on your Firebase setup
+import { collection, addDoc } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+// Import your file uploader component
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/Form"; // Adjust imports based on your UI library
+import { Button } from "@/components/ui/Button"; // Adjust imports based on your UI library
+import { ToastContainer, toast } from "react-toastify"; // Import react-toastify
+import "react-toastify/dist/ReactToastify.css"; // Import CSS for toast notifications
+import FileUploader from "./FileUploader";
 
-import "react-datepicker/dist/react-datepicker.css";
+const EventForm = ({ userId, type, event, eventId }) => {
+  const eventDefaultValues = {
+    eventname: "",
+    category: "",
+    description: "",
+    address: "",
+    imageUrl: "",
+    date: "",
+    entryFee: "",
+  };
 
-type EventFormProps = {
-    userId: string;
-    type: "Create" | "Update";
-}
+  const [files, setFiles] = useState<File[]>([]);
+  const initialValues = event && type === "Update" ? { ...event } : eventDefaultValues;
 
-export default function EventForm({ userId, type }: EventFormProps) {
-    const [files, setFiles] = useState<File[]>([]);
-    const { startUpload } = useUploadThing('imageUploader');
-    const router = useRouter();
-    
-    const initialFormData = {
-        eventname: '',
-        category: '',
-        description: '',
-        address: '',
-        city: '',
-        state: '',
-        zip: '',
-        country: '',
-        entryFee: '',
-        totalSlots: '',
-        availableSlots: '',
-        imageUrl: '',
-        date: '',
-        time: '',
-    };
+  const form = useForm({
+    defaultValues: initialValues,
+  });
 
-    const form = useForm<z.infer<typeof eventFormSchema>>({
-        resolver: zodResolver(eventFormSchema),
-        defaultValues: initialFormData
-    });
+  async function handleCreateEvent(values) {
+    try {
+      let uploadedImageUrl = "";
 
-    // Define a submit handler.
-    async function onSubmit(values: z.infer<typeof eventFormSchema>) {
-        let uploadedImageUrl = values.imageUrl;
+      // Handle image upload
+      if (files.length > 0) {
+        const file = files[0]; // Assuming single file upload
+        const storageRef = ref(storage, `event-images/${file.name}`);
 
-        if (files.length > 0) {
-            const uploadedImages = await startUpload(files);
+        // Upload file to Firebase Storage
+        await uploadBytes(storageRef, file);
+        uploadedImageUrl = await getDownloadURL(storageRef);
+      }
 
-            if (!uploadedImages) {
-                return;
-            }
+      const eventData = {
+        eventname: values.eventname,
+        category: values.category,
+        description: values.description,
+        imageUrl: uploadedImageUrl,
+        address: values.address,
+        date: values.date,
+        entryFee: values.entryFee || "Free",
+        createdAt: new Date(),
+        createdBy: userId,
+      };
 
-            uploadedImageUrl = uploadedImages[0].url;
-        }
-
-        if (type === "Create") {
-            try {
-                const newEvent = await createEvent({
-                    event: {
-                        eventname: values.name,
-                        desc: values.description,
-                        address: values.address,
-                        city: values.city,
-                        state: values.state,
-                        zip: values.zip,
-                        country: values.country,
-                        entryfee: values.entryFee,
-                        totalslots: values.totalSlots,
-                        available: values.availableSlots,
-                        imageUrl: uploadedImageUrl,
-                        categoryId: values.category
-                    },
-                    userId,
-                    path: '/profile'
-                });
-
-                if (newEvent) {
-                    form.reset();
-                    router.push(`/events/${newEvent._id}`);
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        }
+      // Push data to Firebase Firestore
+      const docRef = await addDoc(collection(db, "events"), eventData);
+      toast.success("Event created successfully!"); // Show success toast
+      form.reset(); // Clear the form fields
+      setFiles([]); // Reset files after submission
+    } catch (error) {
+      console.error("Error adding event to Firestore:", error);
+      toast.error("Error creating event: " + error.message); // Show error toast
     }
+  }
 
-    return (
-        <>
-            <div className="p-16">
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 flex flex-col gap-5">
-                        <div className="flex flex-col md:flex-row gap-5">
-                            <FormField
-                                control={form.control}
-                                name="name"
-                                render={({ field }) => (
-                                    <FormItem className="w-full">
-                                        <FormControl>
-                                            <Input placeholder="Event Title" {...field} className="form-input" />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="category"
-                                render={({ field }) => (
-                                    <FormItem className="w-full">
-                                        <FormControl>
-                                            <Dropdown onChangeHandler={field.onChange} value={field.value} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="date"
-                                render={({ field }) => (
-                                    <FormItem className="w-full">
-                                        <FormControl className="h-72">
-                                            <input type="date"  id="date" {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
-                        <div className="flex flex-col gap-5 md:flex-row">
-                            <FormField
-                                control={form.control}
-                                name="address"
-                                render={({ field }) => (
-                                    <FormItem className="w-full">
-                                        <FormControl className="h-60">
-                                            <Textarea placeholder="Address" {...field} className="text-area rounded-2xl" />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="description"
-                                render={({ field }) => (
-                                    <FormItem className="w-full">
-                                        <FormControl className="h-72">
-                                            <Textarea placeholder="Description" {...field} className="text-area rounded-2xl" />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
-                        <div className="flex flex-col gap-5 md:flex-row">
-                            <FormField
-                                control={form.control}
-                                name="imageUrl"
-                                render={({ field }) => (
-                                    <FormItem className="w-full border border-slate-800 rounded-2xl p-1 flex justify-center items-center">
-                                        <FormControl>
-                                            <FileUploader
-                                                onFieldChange={field.onChange}
-                                                imageUrl={field.value}
-                                                setFiles={setFiles}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="availableSlots"
-                                render={({ field }) => (
-                                    <FormItem className="w-full">
-                                        <FormControl>
-                                            <input type="number" className="rounded-full p-2 bg-black border border-slate-500" placeholder="Available slots" {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="entryFee"
-                                render={({ field }) => (
-                                    <FormItem className="w-full">
-                                        <FormControl>
-                                            <input type="number"  className="rounded-full p-2 bg-black border border-slate-500" placeholder="Entry Fee" {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
-                        <div className="flex flex-col gap-5 md:flex-row">
-                            <FormField
-                                control={form.control}
-                                name="time"
-                                render={({ field }) => (
-                                    <FormItem className="w-full">
-                                        <FormControl>
-                                            <input type="number" className="rounded-full p-2 bg-black border border-slate-500" placeholder="Event Time" {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
-                        <Button type="submit">Submit</Button>
-                    </form>
-                </Form>
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-black">
+      <ToastContainer /> {/* Include ToastContainer to display toast notifications */}
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(handleCreateEvent)} className="flex flex-col gap-6 p-8 rounded-lg bg-gray-900 text-white max-w-xl w-full">
+          <h2 className="text-2xl font-bold mb-4 text-white">{type} Event</h2>
+
+          {/* Event Name Field */}
+          <FormField
+            control={form.control}
+            name="eventname"
+            render={({ field }) => (
+              <FormItem>
+                <label className="block text-sm font-medium text-white mb-2">Event Name</label>
+                <FormControl>
+                  <input type="text" {...field} className="w-full p-2 rounded text-black" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* Category Field */}
+          <FormField
+            control={form.control}
+            name="category"
+            render={({ field }) => (
+              <FormItem>
+                <label className="block text-sm font-medium text-white mb-2">Category</label>
+                <FormControl>
+                  <input type="text" {...field} className="w-full p-2 rounded text-black" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* Description Field */}
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <label className="block text-sm font-medium text-white mb-2">Description</label>
+                <FormControl>
+                  <textarea {...field} className="w-full p-2 rounded text-black" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* Address Field */}
+          <FormField
+            control={form.control}
+            name="address"
+            render={({ field }) => (
+              <FormItem>
+                <label className="block text-sm font-medium text-white mb-2">Address</label>
+                <FormControl>
+                  <input type="text" {...field} className="w-full p-2 rounded text-black" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* Date Field */}
+          <FormField
+            control={form.control}
+            name="date"
+            render={({ field }) => (
+              <FormItem>
+                <label className="block text-sm font-medium text-white mb-2">Date</label>
+                <FormControl>
+                  <input type="date" {...field} className="w-full p-2 rounded text-black" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* Entry Fee Field */}
+          <FormField
+            control={form.control}
+            name="entryFee"
+            render={({ field }) => (
+              <FormItem>
+                <label className="block text-sm font-medium text-white mb-2">Entry Fee</label>
+                <FormControl>
+                  <input type="text" {...field} className="w-full p-2 rounded text-black" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* Image Uploader */}
+          <FormField
+            control={form.control}
+            name="imageUrl"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <label className="block text-sm font-medium text-white mb-2">Event Image</label>
+                <FormControl>
+                  <FileUploader onFieldChange={field.onChange} imageUrl={field.value} setFiles={setFiles} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* Image Preview Section */}
+          {files.length > 0 && (
+            <div className="flex flex-col gap-2 mt-4">
+              <h3 className="text-lg font-medium text-white">Uploaded Images:</h3>
+              <div className="flex gap-2">
+                {files.map((file, index) => (
+                  <img key={index} src={URL.createObjectURL(file)} alt={`Uploaded file ${index}`} className="w-24 h-24 object-cover rounded" />
+                ))}
+              </div>
             </div>
-        </>
-    );
-}
+          )}
+
+          {/* Submit Button */}
+          <Button
+            type="submit"
+            size="lg"
+            disabled={form.formState.isSubmitting}
+            className="bg-white text-black hover:bg-gray-300 focus:ring focus:ring-gray-500"
+          >
+            {form.formState.isSubmitting ? "Submitting..." : `${type} Event`}
+          </Button>
+        </form>
+      </Form>
+    </div>
+  );
+};
+
+export default EventForm;
