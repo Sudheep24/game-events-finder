@@ -41,9 +41,12 @@ export const EventsCards = () => {
               <p className="text-gray-500">{event.date}</p>
             </div>
             <div className="btn">
-              <p className="uppercase font-semibold text-xs px-2 whitespace-nowrap py-1 rounded-full bg-white text-gray-800">
-                ORDER NOW
-              </p>
+              {/* Update this section */}
+              <Link href={`/events/${event.id}`}>
+                <p className="uppercase font-semibold text-xs px-2 whitespace-nowrap py-1 rounded-full bg-white text-gray-800 cursor-pointer">
+                  ORDER NOW
+                </p>
+              </Link>
             </div>
           </div>
         </Link>
